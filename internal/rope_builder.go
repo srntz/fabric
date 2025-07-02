@@ -12,7 +12,24 @@ func NewRopeBuilder(s string) *RopeBuilder {
 }
 
 func (rb *RopeBuilder) Build() *Rope {
-	return &Rope{}
+	return &Rope{
+		root: build(rb.blocks),
+	}
+}
+
+func build(blocks []string) Node {
+	if len(blocks) == 1 {
+		return &LeafNode{content: blocks[0]}
+	}
+
+	mid := len(blocks) / 2
+	left := build(blocks[:mid])
+	right := build(blocks[mid:])
+	return &BranchNode{
+		left:   left,
+		right:  right,
+		weight: left.Len(),
+	}
 }
 
 func (rb *RopeBuilder) blockifyString() {

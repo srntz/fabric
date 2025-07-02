@@ -1,5 +1,7 @@
 package internal
 
+import "strings"
+
 type BranchNode struct {
 	left   Node
 	right  Node
@@ -11,5 +13,15 @@ func (bn *BranchNode) Len() int {
 }
 
 func (bn *BranchNode) Val() string {
-	return bn.right.Val() + bn.left.Val()
+	b := strings.Builder{}
+	b.WriteString(bn.left.Val())
+	b.WriteString(bn.right.Val())
+	return b.String()
+}
+
+func (bn *BranchNode) ByteAt(i int) (byte, error) {
+	if i > bn.weight {
+		return bn.right.ByteAt(i - bn.weight)
+	}
+	return bn.left.ByteAt(i)
 }

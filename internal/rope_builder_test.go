@@ -1,12 +1,29 @@
 package internal
 
 import (
-	"math/rand"
 	"testing"
+
+	"github.com/srntz/fabric/internal/spec"
 )
 
+func TestBuild(t *testing.T) {
+	s := spec.RandomString(10000)
+	rb := NewRopeBuilder(s)
+	rope := rb.Build()
+
+	ropelen := rope.root.Len()
+	if ropelen != 10000 {
+		t.Errorf("Unexpected Rope length. Want: %d, Got: %d", 10000, ropelen)
+	}
+
+	ropeval := rope.root.Val()
+	if ropeval != s {
+		t.Errorf("Unexpected Rope content. Want: %s, Got: %s", s, ropeval)
+	}
+}
+
 func TestBlockifyString(t *testing.T) {
-	s := RandomString(10000)
+	s := spec.RandomString(10000)
 	rb := RopeBuilder{s: s}
 	rb.blockifyString()
 
@@ -19,12 +36,4 @@ func TestBlockifyString(t *testing.T) {
 			t.Errorf("Unexpected block length. Want: %d, Got: %d", MAX_LEAF_CONTENT_LEN, len(rb.blocks[i]))
 		}
 	}
-}
-
-func RandomString(len int) string {
-	buf := make([]byte, len)
-	for i := range len {
-		buf[i] = byte(rand.Intn(10) + '0')
-	}
-	return string(buf)
 }
