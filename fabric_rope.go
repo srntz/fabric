@@ -6,6 +6,6 @@ type FabricRope struct {
 	rope *internal.Rope
 }
 
-func (fr *FabricRope) ByteAt(index int) {
-	fr.rope.ByteAt(index)
+func (fr *FabricRope) ByteAt(index int) (byte, error) {
+	return fr.rope.ByteAt(index)
 }

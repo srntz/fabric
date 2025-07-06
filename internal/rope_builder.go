@@ -12,9 +12,7 @@ func NewRopeBuilder(s string) *RopeBuilder {
 }
 
 func (rb *RopeBuilder) Build() *Rope {
-	return &Rope{
-		root: build(rb.blocks),
-	}
+	return NewRope(build(rb.blocks))
 }
 
 func build(blocks []string) Node {

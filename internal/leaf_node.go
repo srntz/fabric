@@ -23,3 +23,10 @@ func (ln *LeafNode) ByteAt(i int) (byte, error) {
 	}
 	return ln.content[i], nil
 }
+
+func (ln *LeafNode) SplitAt(i int) (Node, Node, error) {
+	if i > ln.Len() {
+		return nil, nil, errors.New("index out of bounds")
+	}
+	return &LeafNode{content: ln.content[:ln.Len()/2]}, &LeafNode{content: ln.content[ln.Len()/2:]}, nil
+}
