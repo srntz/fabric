@@ -5,6 +5,8 @@ import "errors"
 var MAX_LEAF_CONTENT_LEN int = 2048
 var MIN_LEAF_CONTENT_LEN int = 512
 
+var IndexOutOfBoundsError = errors.New("Error: Index out of bounds")
+
 type LeafNode struct {
 	content string
 }
@@ -19,14 +21,14 @@ func (ln *LeafNode) Val() string {
 
 func (ln *LeafNode) ByteAt(i int) (byte, error) {
 	if i > ln.Len() {
-		return ' ', errors.New("index out of bounds")
+		return ' ', IndexOutOfBoundsError
 	}
 	return ln.content[i], nil
 }
 
 func (ln *LeafNode) SplitAt(i int) (Node, Node, error) {
-	if i > ln.Len() {
-		return nil, nil, errors.New("index out of bounds")
+	if i > ln.Len() || i < 0 {
+		return nil, nil, IndexOutOfBoundsError
 	}
-	return &LeafNode{content: ln.content[:ln.Len()/2]}, &LeafNode{content: ln.content[ln.Len()/2:]}, nil
+	return &LeafNode{content: ln.content[:i]}, &LeafNode{content: ln.content[i:]}, nil
 }
