@@ -28,17 +28,6 @@ func (bn *BranchNode) ByteAt(i int) (byte, error) {
 
 func (bn *BranchNode) SplitAt(i int) (Node, Node, error) {
 	if i > bn.weight {
-		leftSplit, rightSplit, err := bn.right.SplitAt(i)
-		if err != nil {
-			return nil, nil, err
-		}
-
-		return leftSplit, &BranchNode{
-			left:   rightSplit,
-			right:  bn.right,
-			weight: rightSplit.Len(),
-		}, nil
-	} else {
 		leftSplit, rightSplit, err := bn.right.SplitAt(i - bn.weight)
 		if err != nil {
 			return nil, nil, err
@@ -49,5 +38,16 @@ func (bn *BranchNode) SplitAt(i int) (Node, Node, error) {
 			right:  leftSplit,
 			weight: bn.weight,
 		}, rightSplit, nil
+	} else {
+		leftSplit, rightSplit, err := bn.left.SplitAt(i)
+		if err != nil {
+			return nil, nil, err
+		}
+
+		return leftSplit, &BranchNode{
+			left:   rightSplit,
+			right:  bn.right,
+			weight: rightSplit.Len(),
+		}, nil
 	}
 }

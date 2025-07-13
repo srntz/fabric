@@ -13,6 +13,10 @@ func (r *Rope) ByteAt(i int) (byte, error) {
 }
 
 func (r *Rope) SplitAt(i int) (*Rope, *Rope, error) {
+	if i > r.root.Len() || i < 0 {
+		return nil, nil, IndexOutOfBoundsError
+	}
+
 	left, right, err := r.root.SplitAt(i)
 	if err != nil {
 		return nil, nil, err
