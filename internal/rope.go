@@ -24,3 +24,23 @@ func (r *Rope) SplitAt(i int) (*Rope, *Rope, error) {
 
 	return NewRope(left), NewRope(right), nil
 }
+
+func Concat(left *Rope, right *Rope) *Rope {
+	return NewRope(
+		&BranchNode{
+			left:   left.root,
+			right:  right.root,
+			weight: left.root.Len(),
+		},
+	)
+}
+
+func (r *Rope) InsertAt(i int, seq string) (*Rope, error) {
+	leftSplit, rightSplit, err := r.SplitAt(i)
+	if err != nil {
+		return nil, err
+	}
+
+	seqRope := NewRopeBuilder(seq).Build()
+	return Concat(Concat(leftSplit, seqRope), rightSplit), nil
+}
