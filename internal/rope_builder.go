@@ -32,6 +32,12 @@ func build(blocks []string) Node {
 
 func (rb *RopeBuilder) blockifyString() {
 	rb.blocks = []string{}
+
+	if len(rb.s) == 0 {
+		rb.blocks = append(rb.blocks, rb.s)
+		return
+	}
+
 	for i := 0; i < len(rb.s); i += MAX_LEAF_CONTENT_LEN {
 		if i+MAX_LEAF_CONTENT_LEN > len(rb.s) {
 			rb.blocks = append(rb.blocks, rb.s[i:len(rb.s)])
